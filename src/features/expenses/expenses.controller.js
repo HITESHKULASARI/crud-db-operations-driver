@@ -51,11 +51,31 @@ export default class ExpensesController{
 
     }
     //for filtering the expenses
-    filterExpenses(req,res){
+    async filterExpenses(req,res){
+        try{
+            const minPrice = req.query.minPrice;
+            const maxPrice = req.query.maxPrice;
+            
+            const result = await this.expensesRepository.filterExpenses(minPrice,maxPrice);
+            console.log(result);
+            res.status(200).send(result);
+        }catch(err){
+            console.log("error while filtering from the controller",err);
+        }
 
     }
     //adding the tag to Expense
-    addTagToExpense(req,res){
+    async addTagToExpense(req,res){
+        try{
+            const {productId,tag} = req.body;
+            await this.expensesRepository.addingTag(tag,productId);
+            res.status(200).send("tag is added with the expense");
+        }catch(err){
+            console.log("error while adding the tag",err);
+        }
+
+        
+        
 
     }
 }

@@ -53,5 +53,48 @@ export default class ExpensesRepository{
             console.log("error while getting one expense",err);
         }
     }
+    async filterExpenses(minPrice,maxPrice){
+        try{
+            //get the db
+            const db = getDB();
+            //get the collection
+            const collection = db.collection("expense");
+            //get the filtered result
+            let filterExpression = {};
+            if(minPrice){
+                filterExpression.expense = {$gte:parseFloat(minPrice)};
+            }
+            if(maxPrice){
+                filterExpression.expense = {...filterExpression.price,$lte:parseFloat(maxPrice)};
+            }
+            return await collection.find(filterExpression).toArray();
+
+        }catch(err){
+           console.log("error while filtering",err);
+        }
+        
+    }
+
+    async addingTag(tag,productID){
+        try{
+            //get the database
+            const db = getDB();
+            //get the collection
+            const collection = db.collection("expense");
+            //update the tags
+            await collection.updateOne({_id:new ObjectId(productID)},
+            {
+                $push:{tag:{tag}}
+            }
+            )
+
+        }catch(err){
+
+            console.log("error while adding the tag",err);
+
+        }
+        
+
+    }
 
 }

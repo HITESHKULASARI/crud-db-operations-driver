@@ -18,5 +18,13 @@ expenseRouter.post('/one-expenses',(req,res)=>{
     expensesController.getOneExpense(req,res);
 });
 
+expenseRouter.get('/filter',(req,res)=>{
+    expensesController.filterExpenses(req,res);
+}
+);
+expenseRouter.post('/add-tag',(req,res)=>{
+    expensesController.addTagToExpense(req,res);
+}
+);
 
 export default expenseRouter;
